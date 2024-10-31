@@ -1,6 +1,8 @@
 from unittest import TestCase
 from typing import cast
 from profiling.process import *
+from profiling.useinput import *
+import json
 
 class ProcessInfoTests(TestCase):
     proc: ProcInfo| None = None
@@ -37,3 +39,16 @@ class ProcessChecktests(TestCase):
     def test_SetTrackedList(self):
         testset = ProcessCheck._SetTrackedList(("aaa","BBB","ccc"))
         self.assertListEqual(["aaa","BBB","ccc"], list(testset.keys())  )
+
+
+class IntializationTest(TestCase):
+
+    def test_config(self):
+        jsondata = '{ "interval": 1.1, "tracked": ["aaa","bbb"]}'
+
+        cfg = Config(jsondata)
+        self.assertEquals(1.1,cfg.interval)
+        self.assertEquals("aaa", cfg.tracked[0]  )
+        self.assertEquals("bbb", cfg.tracked[1]  )
+
+        
