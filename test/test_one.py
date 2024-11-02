@@ -3,6 +3,7 @@ from typing import cast
 from profiling.process import *
 from profiling.useinput import *
 import json
+import sys
 
 class ProcessInfoTests(TestCase):
     proc: ProcInfo| None = None
@@ -44,11 +45,20 @@ class ProcessChecktests(TestCase):
 class IntializationTest(TestCase):
 
     def test_config(self):
-        jsondata = '{ "interval": 1.1, "tracked": ["aaa","bbb"]}'
+        jsondata = ""
+
+
+        with open('test/files/testSetup.cfg', 'r') as file:
+            jsondata = file.read()
+            
+
+
 
         cfg = Config(jsondata)
         self.assertEquals(1.1,cfg.interval)
         self.assertEquals("aaa", cfg.tracked[0]  )
         self.assertEquals("bbb", cfg.tracked[1]  )
-
-        
+        self.assertEquals("TAG",cfg.tag)
+        self.assertEquals("outfile.csv",cfg.outfile)
+    
+ 

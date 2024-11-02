@@ -5,7 +5,7 @@ from typing import Dict,cast,Any
 from datetime import datetime
 from profiling.useinput import *
 import psutil
-import os
+import os, sys
 
 
 
@@ -41,16 +41,26 @@ def list_running_processes_with_cpu( DProcInfo: ProcInfoDict, XTRA: Tuple[str,An
 
 
 class PARAMS:
-    Tag: str = "Tagging"
+    outfile: str = "outp.csv"
+    tag: str = "Tagging"
     intv: float = 2.5
     tracked: Tuple[str,...] = ("POWERPNT.EXE", )
 
 
-if __name__ == "__main__":
-#timer = ProcessCheck.SetUpTracking(2, ("chrome.exe", ) )
-    ff = open("myfile.xtx","w")
-    ff.write("Name,Instances,CPU,Timestamp,Tag\n")
-    extras = (PARAMS.Tag,ff)
+
+def main() -> None:
+
+    print(f"Tag            : {PARAMS.tag}")    
+    print(f"Tracked Process: {PARAMS.tracked}")
+    print(f"Interval       : {PARAMS.intv}s")
+    print(f"Output file    : {PARAMS.outfile}")
+    print(f"-------------------")
+
+
+
+    ff = open(PARAMS.outfile,"w")
+    ff.write("Name,Instances,CPU,Tag,Timestamp\n")
+    extras = (PARAMS.tag,ff)
     timer = ProcessCheck.SetUpTracking(PARAMS.intv, PARAMS.tracked, list_running_processes_with_cpu,extras )
 
     while(True):
@@ -68,10 +78,36 @@ if __name__ == "__main__":
                 print("cancelled")
                 break
             case _:
-                print("Invalid Option")
-    
+                print("Invalid Option")   
 
 
 
     ff.close()
     print("done")
+
+    
+
+
+if __name__ == "__main__":
+
+    try:
+        fn = sys.argv[1]
+        with open(fn, 'r') as file:
+            jsondata = file.read()
+            cfg = Config(jsondata)
+            PARAMS.tag = cfg.tag
+            PARAMS.outfile = cfg.outfile
+            PARAMS.tracked = cfg.tracked
+            PARAMS.intv = cfg.interval
+    except IndexError:
+        print("! Using defaults, no file name supplied")
+    except FileNotFoundError:
+        print("! Using defaults, cant find config file")
+
+    finally:
+        
+        main()
+
+
+
+

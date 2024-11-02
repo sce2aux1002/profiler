@@ -3,3 +3,4 @@ __pycache__
 *outfile*
 build
 scratch/*/*
+scratch/*

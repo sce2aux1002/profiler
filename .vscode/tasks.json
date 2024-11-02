@@ -1,0 +1,19 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run File with Args",
+            "type": "shell",
+            "command": "c:/Users/BRobert2/VSCodeProjects/Python/Profiler/.venv/Scripts/python.exe",
+            "args": [
+                "${file}", "${workspaceFolder}\\profilejob.cfg"
+            ],
+            "problemMatcher": [
+                "$python"
+            ]
+            
+        }
+    ]
+}
