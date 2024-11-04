@@ -14,6 +14,7 @@ import os, sys
 def list_running_processes_with_cpu( DProcInfo: ProcInfoDict, XTRA: Tuple[str,Any]  ):
 
 
+
     for key in DProcInfo.keys(): DProcInfo[key].Reset() #cr
 
     """Lists all running processes on the system, including CPU utilization."""
@@ -32,10 +33,12 @@ def list_running_processes_with_cpu( DProcInfo: ProcInfoDict, XTRA: Tuple[str,An
             #cpu_usage = proc.info['cpu_percent'] 
             #print(f" PID: {proc.info['pid']}, Name: {proc.info['name']}, User: {proc.info['username']}, CPU Usage: {cpu_usage}% Tag: {ProcInfo.Tag} TS: {ProcInfo.Timestamp}")
             
+    # === start write
        
-    for key in DProcInfo.keys():
+    for key in DProcInfo.keys():        
+
         PI=DProcInfo[key]
-        M: str = f"{PI.name},{PI.instances},{PI.cpu},{PI.Tag},{PI.Timestamp}\n"
+        M: str = f"{PI.name},{PI.instances},{PI.cpu},{PI.Tag},{PI.Timestamp}\n"       
         XTRA[1].write(M)
         #print(f"**Name: {PI.name} Instances: {PI.instances} CPU: {PI.cpu} Tag: {PI.Tag} TS:{PI.Timestamp} X:{XTRA[0]}" )
 
@@ -44,7 +47,7 @@ class PARAMS:
     outfile: str = "outp.csv"
     tag: str = "Tagging"
     intv: float = 2.5
-    tracked: Tuple[str,...] = ("POWERPNT.EXE", )
+    tracked: Tuple[str,...] = ("Code.exe", "python.exe" )
 
 
 

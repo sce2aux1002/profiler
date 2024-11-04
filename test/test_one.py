@@ -41,6 +41,11 @@ class ProcessChecktests(TestCase):
         testset = ProcessCheck._SetTrackedList(("aaa","BBB","ccc"))
         self.assertListEqual(["aaa","BBB","ccc"], list(testset.keys())  )
 
+    def test_getdata(self):
+        ff: float= 99.6
+        print(F"CPU #: {ff/ProcInfo.GetCpuCount()}")
+    
+        pass
 
 class IntializationTest(TestCase):
 

@@ -2,7 +2,7 @@ from threading import Timer
 from typing import NamedTuple, Iterable, Callable, Dict
 from datetime import datetime
 from typing import Dict, Any
-#from psutil import Process
+from psutil import Process,cpu_count
 
 def addone( X: int) -> int:
     return X + 1
@@ -13,6 +13,10 @@ class ProcInfo():
     Timestamp: datetime;
     Tag: str
     
+    @staticmethod
+    def GetCpuCount() -> int:
+        return cpu_count()
+
     def __init__(self, name: str) -> None:
         self._name = name
         self._reset()
@@ -87,6 +91,19 @@ class ProcessCheck():
 
          rval = RepeatTimer( ProcessCheck._Interval, cback, [ProcessCheck._SetTrackedList(trackedNames),extra]  ) 
          return rval
+
+    @staticmethod
+    def GenHeader( DPI: ProcInfoDict )  -> str:
+        retval: str = 'Timestamp,Tag,'.join(DPI.keys())
+        return retval
+    @staticmethod
+    def GenRecord( DPI: ProcInfoDict) ->str:
+        
+        retval:  str = "{0},{1}".format(ProcInfo.Timestamp,ProcInfo.Timestamp)
+        #for PI in DPI:
+
+
+        return ""
 
 
 

@@ -4,3 +4,5 @@ __pycache__
 build
 scratch/*/*
 scratch/*
+dist/timercheck/_internal
+
