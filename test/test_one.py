@@ -57,7 +57,7 @@ class ProcessChecktests(TestCase):
         x.insert(0,2)
         print(set(x).difference([1,3,4]))
         print(set(x).difference([2,1,3]))
-     
+        
 
 class IntializationTest(TestCase):
 
