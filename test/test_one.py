@@ -21,6 +21,7 @@ class ProcessInfoTests(TestCase):
         infobadname: Dict[str,Any] = {"name": "foox.bar","cpu_percent": 0.24}
         infogood1: Dict[str,Any] = {"name": "foo.bar","cpu_percent": 0.2}
         infogood2: Dict[str,Any] = {"name": "foo.bar","cpu_percent": 0.3}
+        infogood3: Dict[str,Any] = {"name": "foo.bar","cpu_percent": 10.4}
         
         with self.assertRaises(Exception):
             tproc.Update(infobadname)
@@ -32,6 +33,15 @@ class ProcessInfoTests(TestCase):
         tproc.Update(infogood2)
         self.assertEquals(2, tproc.instances)
         self.assertEquals(.5, tproc.cpu)
+
+        tproc.Reset()
+        self.assertEquals(0, tproc.instances)
+        tproc.Update(infogood3, cpus=2)
+        self.assertEquals(1, tproc.instances)
+        self.assertEquals(5.2, tproc.cpu)
+
+
+
    
 
 
@@ -42,10 +52,12 @@ class ProcessChecktests(TestCase):
         self.assertListEqual(["aaa","BBB","ccc"], list(testset.keys())  )
 
     def test_getdata(self):
-        ff: float= 99.6
-        print(F"CPU #: {ff/ProcInfo.GetCpuCount()}")
-    
-        pass
+        x = [1,3,4]
+        x.pop()
+        x.insert(0,2)
+        print(set(x).difference([1,3,4]))
+        print(set(x).difference([2,1,3]))
+     
 
 class IntializationTest(TestCase):
 

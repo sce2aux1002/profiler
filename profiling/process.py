@@ -2,10 +2,11 @@ from threading import Timer
 from typing import NamedTuple, Iterable, Callable, Dict
 from datetime import datetime
 from typing import Dict, Any
-from psutil import Process,cpu_count
+from psutil import Process,cpu_count, process_iter
 
-def addone( X: int) -> int:
-    return X + 1
+
+
+ProcClass = Process
 
 
 
@@ -16,6 +17,11 @@ class ProcInfo():
     @staticmethod
     def GetCpuCount() -> int:
         return cpu_count()
+    
+    @staticmethod
+    def GetProcesses() ->Iterable[ProcClass]:
+        return process_iter(['pid', 'name', 'username', 'cpu_percent'])
+
 
     def __init__(self, name: str) -> None:
         self._name = name
@@ -35,11 +41,11 @@ class ProcInfo():
     def cpu(self) -> float:
         return self._cpu
     
-    def Update(self, info: dict[str,Any] ) -> None:
+    def Update(self, info: dict[str,Any] , cpus = 1 ) -> None:
         if info['name'] != self._name :
             raise(Exception)
         self._instances += 1
-        self._cpu += info['cpu_percent'] 
+        self._cpu += info['cpu_percent'] / cpus
     
     def Reset(self) -> None:
         self._reset()
@@ -52,6 +58,8 @@ class RepeatTimer(Timer):
 ProcInfoDict =  Dict[str, ProcInfo] 
 
 ProcCallback = Callable[[ProcInfoDict,Any], None]
+
+
 
 
 def theloop( procs: Dict[str, ProcInfo] = {}):

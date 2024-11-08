@@ -4,7 +4,7 @@ from profiling.process import ProcessCheck,ProcInfo,theloop, ProcInfoDict
 from typing import Dict,cast,Any
 from datetime import datetime
 from profiling.useinput import *
-import psutil
+#import psutil
 import os, sys
 
 
@@ -25,11 +25,12 @@ def list_running_processes_with_cpu( DProcInfo: ProcInfoDict, XTRA: Tuple[str,An
             ProcInfo.Tag = XTRA[0]
             ProcInfo.Timestamp = datetime.now()
 
-        for proc in psutil.process_iter(['pid', 'name', 'username', 'cpu_percent']):
+        #for proc in psutil.process_iter(['pid', 'name', 'username', 'cpu_percent']):
+        for proc in  ProcInfo.GetProcesses():
 
             if i == 0 or proc.info['name'] not in DProcInfo.keys():   
                 continue
-            DProcInfo[proc.info['name']].Update(proc.info)                         
+            DProcInfo[proc.info['name']].Update(proc.info, cpus=ProcInfo.GetCpuCount())                         
             #cpu_usage = proc.info['cpu_percent'] 
             #print(f" PID: {proc.info['pid']}, Name: {proc.info['name']}, User: {proc.info['username']}, CPU Usage: {cpu_usage}% Tag: {ProcInfo.Tag} TS: {ProcInfo.Timestamp}")
             
@@ -51,8 +52,10 @@ class PARAMS:
 
 
 
-def main() -> None:
 
+
+def main() -> None:
+    print(f"Version        :  0.1.0.0")    
     print(f"Tag            : {PARAMS.tag}")    
     print(f"Tracked Process: {PARAMS.tracked}")
     print(f"Interval       : {PARAMS.intv}s")
@@ -70,10 +73,10 @@ def main() -> None:
         sel = DoInput("Start Menu",("\t1. Start", "\t2. Cancel"))
         match sel:
             case "1":
-                print("starting")
-                print("Press return in window to quit")
+                print("Starting- Press Esc quit")
                 timer.start()
-                input()                
+                #input()                
+                KeyCheck.WaitForStop()
                 timer.cancel()
                 timer.join()
                 break
