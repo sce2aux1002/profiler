@@ -37,16 +37,20 @@ class Config:
     
 
 class KeyCheck:
+    _Lstr: Listener
     @staticmethod    
-    def on_press(key: Key |KeyCode|None ):
+
+    def on_press(key ):
         if key == Key.esc :
             # Stop listener
             print("Exiting")
-            exit()  
+            KeyCheck._Lstr.stop()
+            
     
     @staticmethod    
     def WaitForStop()-> None:
         # Collect events until released
         with Listener( on_press=KeyCheck.on_press) as listener:
+            KeyCheck._Lstr = listener
             listener.join()
   
